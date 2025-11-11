@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Brendan Sheppard - Business Analyst</title>
+
+    <style>
+        /* ---- Base / Reset ---- */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            overflow-y: scroll;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        :root {
+            --bg: #ffffff;
+            --fg: #0A0F1C;
+            --accent: #00E181;
+            --logo-strip-bg: #e8e8e8;
+            --header-h: 72px;
+            --container-w: 800px;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f0f0f;
+            --fg: #ffffff;
+            --logo-strip-bg: #ffffff;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+        }
+
+        /* ---- Snap Sections ---- */
+        .snap-section {
+            min-height: 100vh;
+            scroll-snap-align: start;
+        }
+
+        /* ---- Fixed Header ---- */
+        .header {
+            position: fixed;
+            inset: 0 0 auto 0;
+            height: var(--header-h);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            z-index: 1000;
+            transition: backdrop-filter .3s ease, background-color .3s ease;
+        }
+
+        .header.scrolled {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, .7);
+        }
+
+        [data-theme="dark"] .header.scrolled {
+            background: rgba(15, 15, 15, .7);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .theme-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            color: var(--fg);
+        }
+
+        .theme-btn:hover {
+            background: rgba(128, 128, 128, .1);
+        }
+
+        .theme-icon {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .header .linkedin-icon {
+            width: 28px;
+            height: 28px;
+            display: inline-block;
+            background-image: url('https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            filter: brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(1583%) hue-rotate(187deg) brightness(94%) contrast(98%);
+            transition: transform .2s ease;
+        }
+
+        .header .linkedin-icon:hover {
+            transform: scale(1.08);
+        }
+
+        .cta {
+            background: var(--accent);
+            color: #0A0F1C;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            box-shadow: 0 2px 8px rgba(0, 225, 129, .3);
+            transition: all .3s ease;
+            white-space: nowrap;
+        }
+
+        .cta:hover {
+            background: #00ff94;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 225, 129, .5);
+        }
+
+        /* ---- Hero Section ---- */
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: calc(var(--header-h) + 8px) 40px 40px;
+            position: relative;
+            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: var(--container-w);
+            margin: 0 auto;
+            text-align: center;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        .avatar {
+            width: clamp(120px, 25vw, 192px);
+            height: clamp(120px, 25vw, 192px);
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: top;
+            margin: 0 auto clamp(16px, 3vh, 24px);
+            background: transparent;
+            flex-shrink: 0;
+        }
+
+        h1 {
+            color: var(--accent);
+            font-size: clamp(1.75rem, 5vw, 2.5rem);
+            margin: 0 0 clamp(12px, 2vh, 16px);
+            font-weight: 700;
+        }
+
+        .bio {
+            font-size: clamp(0.95rem, 2.5vw, 1.125rem);
+            line-height: 1.6;
+            margin: 0 0 clamp(20px, 4vh, 32px);
+            opacity: .9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Logo section header */
+        .logo-section-header {
+            text-align: center;
+            margin: 24px 0 16px;
+        }
+
+        .logo-section-header h2 {
+            color: var(--fg);
+            font-size: clamp(0.95rem, 3.5vw, 1.75rem);
+            font-weight: 700;
+            margin: 0 0 20px 0;
+            opacity: 0.9;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ---- Logo marquee ---- */
+        .logo-strip {
+            --strip-h: clamp(48px, 6vw, 70px);
+            --logo-h: calc(var(--strip-h) * 0.75);
+            --gap: clamp(32px, 4vw, 48px);
+            --speed: 35s;
+            background: var(--logo-strip-bg);
+            padding: 8px 0;
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+            border-top: 1px solid #e9e9e9;
+            border-bottom: 1px solid #e9e9e9;
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        }
+
+        .marquee {
+            overflow: hidden;
+        }
+
+        .marquee-inner {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--gap);
+            height: var(--strip-h);
+            will-change: transform;
+            animation: marquee var(--speed) linear infinite;
+        }
+
+        @keyframes marquee {
+            from {
+                transform: translateX(0)
+            }
+
+            to {
+                transform: translateX(-50%)
+            }
+        }
+
+        .marquee:hover .marquee-inner {
+            animation-play-state: paused;
+        }
+
+        .logo-mono {
+            filter: brightness(0) saturate(100%) invert(3%) sepia(13%) saturate(4851%) hue-rotate(189deg) brightness(97%) contrast(96%);
+        }
+
+        /* ---- Scroll Indicator Container ---- */
+        .scroll-indicator-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 8px 0;
+            z-index: 100;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-indicator-container.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .scroll-indicator {
+            cursor: pointer;
+            pointer-events: all;
+        }
+
+        .chevron-circle {
+            width: 48px;
+            height: 48px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 225, 129, 0.3);
+            transition: all 0.3s ease;
+            animation: bounce-chevron 5s ease-in-out infinite;
+        }
+
+        .scroll-indicator:hover .chevron-circle {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 225, 129, 0.5);
+        }
+
+        .chevron {
+            width: 24px;
+            height: 24px;
+            stroke: #0A0F1C;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        @keyframes bounce-chevron {
+
+            0%,
+            90%,
+            100% {
+                transform: translateY(0);
+            }
+
+            92% {
+                transform: translateY(-8px);
+            }
+
+            94% {
+                transform: translateY(-4px);
+            }
+        }
+
+        /* ---- Timeline section ---- */
+        .timeline-section {
+            position: relative;
+            background: var(--bg);
+            padding: 0 0 0;
+        }
+
+        /* Sticky Experience header */
+        .timeline-header {
+            position: sticky;
+            top: var(--header-h);
+            z-index: 20;
+            background: var(--bg);
+            border-bottom: 1px solid rgba(0, 0, 0, .06);
+            transition: transform 0.3s ease;
+        }
+
+        [data-theme="dark"] .timeline-header {
+            border-bottom: 1px solid rgba(255, 255, 255, .12);
+        }
+
+        .timeline-header .inner {
+            max-width: var(--container-w);
+            margin: 0 auto;
+            padding: 16px 40px 18px;
+        }
+
+        .timeline-header h2 {
+            margin: 0;
+            font-size: 2rem;
+            color: var(--accent);
+        }
+
+        .timeline-header p {
+            margin: 6px 0 0;
+            opacity: .85;
+            font-size: 1.05rem;
+        }
+
+        /* Timeline body */
+        .timeline {
+            max-width: var(--container-w);
+            margin: 0 auto;
+            padding: 120px 40px 60px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: calc(40px + 36px);
+            top: calc(120px + 34.56px);
+            bottom: 60px;
+            width: 2px;
+            background: linear-gradient(180deg, rgba(0, 225, 129, 0.3), var(--accent));
+        }
+
+        .t-pin {
+            position: absolute;
+            left: 36px;
+            top: calc(0.9em + 18px);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 225, 129, .28);
+            transform: translate(-50%, -50%);
+        }
+
+        .t-item {
+            position: relative;
+            padding: 2px 0 32px 100px;
+            margin: 0;
+            min-height: 60px;
+        }
+
+        .t-company-logo {
+            height: 28px;
+            width: auto;
+            max-width: 160px;
+            object-fit: contain;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .t-role {
+            margin: 4px 0 0;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .t-dur {
+            margin: 6px 0 12px;
+            opacity: .75;
+            font-size: 0.95rem;
+        }
+
+        .t-item ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .t-item li {
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+
+        .timeline-end {
+            position: relative;
+            padding: 0 0 0 100px;
+            margin: 0;
+            opacity: 0.6;
+            font-style: italic;
+            font-size: 0.95rem;
+            min-height: 30px;
+        }
+
+        .timeline-end .t-pin {
+            width: 8px;
+            height: 8px;
+            opacity: 0.5;
+        }
+
+        /* ---- Footer ---- */
+        .footer {
+            background: var(--bg);
+            border-top: 1px solid rgba(128, 128, 128, 0.2);
+            padding: 20px 24px;
+            text-align: center;
+            font-size: 0.85rem;
+            opacity: 0.6;
+        }
+
+        .footer p {
+            margin: 0;
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width:768px) {
+            .hero-section {
+                padding: calc(var(--header-h) + 20px) 24px 40px;
+                height: 100vh;
+                min-height: 100vh;
+            }
+
+            .timeline-header .inner {
+                padding: 14px 24px 16px;
+            }
+
+            .timeline {
+                padding: 120px 24px 60px 24px;
+            }
+
+            .timeline::before {
+                left: calc(24px + 36px);
+                top: calc(120px + 34.56px);
+            }
+
+            .t-item {
+                padding: 2px 0 32px 84px;
+            }
+
+            .timeline-end {
+                padding-left: 84px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .bio {
+                font-size: 1rem;
+            }
+            
+            .logo-section-header {
+                margin: 16px 0 12px;
+            }
+        }
+
+        @media (max-width:480px) {
+            .header {
+                padding: 16px 16px;
+            }
+
+            .t-item {
+                padding: 4px 0 32px 76px;
+            }
+
+            .timeline-end {
+                padding-left: 76px;
+            }
+
+            .logo-strip {
+                --gap: clamp(36px, 9vw, 48px);
+                --speed: 45s;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .logo-section-header h2 {
+                font-size: 1.4rem;
+            }
+            
+            .hero-section {
+                padding: calc(var(--header-h) + 20px) 16px 40px;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .logo-strip{
+                margin-bottom: 90px;
+                width: 100vw;
+                margin-top: -15px;
+            }
+            .avatar {
+                margin-top: 50px;
+            }
+            .h1,.p{
+                margin-top: -15px;
+                
+            }
+        }
+
+        @media (max-width: 768px) {
+            .avatar {
+                margin-top: 0;
+            }
+            
+            .bio {
+                padding: 0 15px;
+            
+            }
+            .logo-strip{
+                margin-bottom: 50px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .avatar {
+                margin-top: 0;
+            }
+            
+            .bio {
+                padding: 0 10px;
+            }
+            .logo-strip{
+                margin-bottom: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Fixed Header -->
+    <header class="header" id="header">
+        <div class="header-left">
+            <!-- Theme switcher on left side -->
+            <button class="theme-btn" id="theme-toggle" title="Toggle theme">
+                <svg class="theme-icon" id="theme-icon" viewBox="0 0 24 24"></svg>
+            </button>
+        </div>
+
+        <div class="header-right">
+            <!-- LinkedIn moved right of theme switcher -->
+            <a href="https://www.linkedin.com/in/brendansheppard" target="_blank" rel="noopener noreferrer"
+                class="linkedin-icon" aria-label="LinkedIn Profile"></a>
+
+            <a href="https://www.textac.co" target="_blank" rel="noopener noreferrer" class="cta">Consulting
+                Services</a>
+        </div>
+    </header>
+
+    <!-- Snap scroll chevron -->
+    <div class="scroll-indicator-container" id="scroll-indicator">
+        <div class="scroll-indicator"
+            onclick="document.getElementById('experience').scrollIntoView({behavior: 'smooth', block: 'start'})"
+            role="button" aria-label="Scroll to experience">
+            <div class="chevron-circle">
+                <svg class="chevron" viewBox="0 0 24 24" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <main>
+        <section class="hero-section">
+            <div class="container">
+                <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761572854/Headshot_white_tn3o7u.png"
+                    alt="Brendan Sheppard" class="avatar" id="avatar-img" />
+                <h1 class="h1">Brendan Sheppard</h1>
+                <p  class="bio p">
+                    Business Analyst professional with a strong record of business analysis,
+                    user experience design, and business improvement activities in a range of
+                    leading organisations in the private and government sectors.
+                </p>
+
+                
+               
+                
+                <section aria-label="Companies I've worked with" class="logo-strip">
+                    <div class="marquee">
+                        <div class="marquee-inner">
+                            <!-- Track 1 -->
+                            <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761531976/allianz-black_fhzl8z.svg"
+                                alt="Allianz" class="logo-mono" style="height:var(--logo-h);width:auto;object-fit:contain"
+                                loading="lazy" />
+                            <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761532578/budget-direct-black_boldgt.svg"
+                                alt="Budget Direct" class="logo-mono"
+                                style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
+                            <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761532579/fc-black_cxbh7a.svg"
+                                alt="Flight Centre" class="logo-mono"
+                                style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
+                            <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761540650/fcm-black_yafwon.svg"
+                                alt="FCM" class="logo-mono" style="height:var(--logo-h);width:auto;object-fit:contain"
+                                loading="lazy" />
+                            <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761532580/liquid-black_l8fhgy.svg"
+                                alt="Liquid Interactive" class="logo-mono"
+                                style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
+                            <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761532580/pfb-black_d1qsug.svg"
+                                alt="People First Bank" class="logo-mono"
+                                style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
+                            <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761543598/qut-black-trimmed_tv8d7l.svg"
+                                alt="QUT" style="height:calc(var(--logo-h) * 1.4);width:auto;object-fit:contain"
+                                loading="lazy" />
+                            <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761531951/qbcc-black_f9dvaw.svg"
+                                alt="QBCC" class="logo-mono" style="height:var(--logo-h);width:auto;object-fit:contain"
+                                loading="lazy" />
+
+                            <!-- Track 2 duplicate -->
+                            <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761531976/allianz-black_fhzl8z.svg"
+                                alt="" aria-hidden="true" class="logo-mono"
+                                style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
+                            <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761532578/budget-direct-black_boldgt.svg"
+                                alt="" aria-hidden="true" class="logo-mono"
+                                style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
+                            <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761532579/fc-black_cxbh7a.svg"
+                                alt="" aria-hidden="true" class="logo-mono"
+                                style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
+                            <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761540650/fcm-black_yafwon.svg"
+                                alt="" aria-hidden="true" class="logo-mono"
+                                style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
+                            <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761532580/liquid-black_l8fhgy.svg"
+                                alt="" aria-hidden="true" class="logo-mono"
+                                style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
+                            <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761532580/pfb-black_d1qsug.svg"
+                                alt="" aria-hidden="true" class="logo-mono"
+                                style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
+                            <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761543598/qut-black-trimmed_tv8d7l.svg"
+                                alt="" aria-hidden="true"
+                                style="height:calc(var(--logo-h) * 1.4);width:auto;object-fit:contain" loading="lazy" />
+                            <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761531951/qbcc-black_f9dvaw.svg"
+                                alt="" aria-hidden="true" class="logo-mono"
+                                style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <!-- Timeline section -->
+        <section class="timeline-section" id="experience">
+            <div class="timeline-header">
+                <div class="inner">
+                    <h2>Experience</h2>
+                    <p>20 years across financial services, travel, education, and government sectors</p>
+                </div>
+            </div>
+
+            <div class="timeline">
+                
+                <!-- Each item has a dedicated .t-pin and logo -->
+                <article class="t-item">
+                    <span class="t-pin" aria-hidden="true"></span>
+                    <p class="t-company">
+                        Allianz Partners
+                    </p>
+                    <p class="t-role">Business Analyst</p>
+                    <p class="t-dur">Jul 2022 – Present · 2+ years</p>
+                    <p>Focusing on user journey optimisation and experience design in the insurance sector.</p>
+                </article>
+
+                <article class="t-item">
+                    <span class="t-pin" aria-hidden="true"></span>
+                    <p class="t-company">
+                        Liquid Interactive
+                    </p>
+                    <p class="t-role">Senior Business Analyst</p>
+                    <p class="t-dur">May 2021 – Jun 2022 · 1 yr 2 mos</p>
+                    <p>Led agile delivery projects with emphasis on customer experience and process improvement.</p>
+                </article>
+
+                <article class="t-item">
+                    <span class="t-pin" aria-hidden="true"></span>
+                    <p class="t-company">
+                        People First Bank
+                    </p>
+                    <p class="t-role">Senior Business Analyst</p>
+                    <p class="t-dur">Mar 2022 – Jun 2022 · 4 mos</p>
+                    <p>Supported merger program unifying members and systems across the new organisation.</p>
+                </article>
+
+                <article class="t-item">
+                    <span class="t-pin" aria-hidden="true"></span>
+                    <p class="t-company">
+                        QBCC
+                    </p>
+                    <p class="t-role">Senior Business Analyst</p>
+                    <p class="t-dur">Aug 2019 – Feb 2020 · 7 mos</p>
+                    <p>Business process modelling and regulatory systems analysis.</p>
+                </article>
+
+                <article class="t-item">
+                    <span class="t-pin" aria-hidden="true"></span>
+                    <p class="t-company">
+                        QUT
+                    </p>
+                    <p class="t-role">Senior Business Analyst</p>
+                    <p class="t-dur">Mar 2018 – Nov 2018 · 9 mos</p>
+                    <p>Improved learner and partner engagement systems.</p>
+                </article>
+
+                <article class="t-item">
+                    <span class="t-pin" aria-hidden="true"></span>
+                    <p class="t-company">
+                        Budget Direct
+                    </p>
+                    <p class="t-role">Senior Business Analyst</p>
+                    <p class="t-dur">Nov 2017 – Feb 2018 · 4 mos</p>
+                    <p>Optimised BAU sales & service processes for insurance operations.</p>
+                </article>
+
+                <article class="t-item">
+                    <span class="t-pin" aria-hidden="true"></span>
+                    <p class="t-company">
+                        Flight Centre Travel Group
+                    </p>
+                    <p class="t-role">Business Analyst</p>
+                    <p class="t-dur">2013 – 2017 · 4 years</p>
+                    <p>Led financial system migrations and infrastructure projects globally.</p>
+                </article>
+
+                <article class="t-item">
+                    <span class="t-pin" aria-hidden="true"></span>
+                    <p class="t-company">
+                        FCM Travel Solutions
+                    </p>
+                    <p class="t-role">Business Analyst / Team Leader</p>
+                    <p class="t-dur">2009 – 2012 · 3 years</p>
+                    <p>Managed BA team and drove continuous improvement for corporate travel solutions.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2023 Brendan Sheppard. All rights reserved.</p>
+    </footer>
+
+    <!-- Theme + Header JS -->
+    <script>
+        const icons = {
+            sun: '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>',
+            moon: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
+            monitor: '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>'
+        };
+        const html = document.documentElement;
+        const header = document.getElementById('header');
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const scrollIndicator = document.getElementById('scroll-indicator');
+
+        function sys() { return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+        function setIcon(mode) {
+            themeIcon.innerHTML = mode === 'system' ? icons.monitor : mode === 'light' ? icons.sun : icons.moon;
+            themeToggle.title = 'Current: ' + (mode === 'system' ? 'System' : mode[0].toUpperCase() + mode.slice(1)) + ' mode';
+        }
+        function applyTheme(mode) {
+            let actual = (mode === 'system') ? sys() : mode;
+            if (actual === 'dark') { html.setAttribute('data-theme', 'dark'); } else { html.removeAttribute('data-theme'); }
+            setIcon(mode);
+        }
+        function cycle() {
+            const cur = localStorage.getItem('theme') || 'system';
+            const next = cur === 'system' ? 'light' : cur === 'light' ? 'dark' : 'system';
+            localStorage.setItem('theme', next);
+            applyTheme(next);
+        }
+        themeToggle.addEventListener('click', cycle);
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+            if ((localStorage.getItem('theme') || 'system') === 'system') applyTheme('system');
+        });
+        applyTheme(localStorage.getItem('theme') || 'system');
+
+        // Header blur toggle and chevron visibility
+        window.addEventListener('scroll', () => {
+            const y = window.pageYOffset || document.documentElement.scrollTop;
+            if (y > 50) header.classList.add('scrolled'); else header.classList.remove('scrolled');
+
+            // Arrow scroll indicator functionality
+            if (scrollIndicator) {
+                const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                const heroSection = document.querySelector('.hero-section');
+                const hidePoint = heroSection ? heroSection.offsetHeight * 0.3 : 300; // Hide after 30% of hero section
+                
+                if (scrollY < hidePoint) {
+                    // Show arrow - user is at top
+                    scrollIndicator.classList.remove('hidden');
+                } else {
+                    // Hide arrow - user is in content
+                    scrollIndicator.classList.add('hidden');
+                }
+            }
+        });
+
+        // Initial check for arrow visibility
+        window.dispatchEvent(new Event('scroll'));
+        
+        // Ensure page loads at the top
+        window.scrollTo(0, 0);
+    </script>
+</body>
+
+</html>
+
