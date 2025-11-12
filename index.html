@@ -1,665 +1,578 @@
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Brendan Sheppard - Business Analyst</title>
 
-<style>
-  /* ---- Base / Reset ---- */
-  *, *::before, *::after { box-sizing: border-box; }
-  html {
-    scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
-    overflow-y: scroll;
-  }
-  html, body {
-    min-height: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-  }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1f3b4dff ;
+            --primary-light: #57b3ca;
+            --background: #ffffff;
+            --card: #f8fafc;
+            --muted-foreground: #6b7280;
+            --border: #e5e7eb;
+            --foreground: #1f3b4dff;
+        }
 
-  :root{
-    --bg:#ffffff;
-    --fg:#0A0F1C;
-    --accent:#00E181;
-    --logo-strip-bg:#e8e8e8;
-    --header-h:72px;
-    --container-w:800px;
-  }
-  [data-theme="dark"]{
-    --bg:#0f0f0f;
-    --fg:#ffffff;
-    --logo-strip-bg:#ffffff;
-  }
+   
+        body {
+            background-color: var(--background);
+            /* color: var(--foreground); */
+            line-height: 1.6;
+        }
 
-  body{ background:var(--bg); color:var(--fg); }
+        .min-h-screen {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-  /* ---- Snap Sections ---- */
-  .snap-section {
-    min-height: 100vh;
-    scroll-snap-align: start;
-  }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
 
-  /* ---- Fixed Header ---- */
-  .header{
-    position:fixed; inset:0 0 auto 0; height:var(--header-h);
-    display:flex; align-items:center; justify-content:flex-end; gap:14px;
-    padding:16px 24px; z-index:1000;
-    transition:backdrop-filter .3s ease, background-color .3s ease;
-  }
-  .header.scrolled{
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    background: rgba(255,255,255,.7);
-  }
-  [data-theme="dark"] .header.scrolled{ background: rgba(15,15,15,.7); }
+        /* Navigation */
+        .navigation {
+            background-color: var(--background);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-  .theme-btn{
-    width:40px; height:40px; border:none; background:transparent; border-radius:8px; cursor:pointer;
-    display:grid; place-items:center; color:var(--fg);
-  }
-  .theme-btn:hover{ background:rgba(128,128,128,.1); }
-  .theme-icon{ width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
 
-  .header .linkedin-icon{
-    width:28px; height:28px; display:inline-block;
-    background-image:url('https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg');
-    background-size:contain; background-repeat:no-repeat;
-    filter: brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(1583%) hue-rotate(187deg) brightness(94%) contrast(98%);
-    transition: transform .2s ease;
-  }
-  .header .linkedin-icon:hover{ transform:scale(1.08); }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+        }
 
-  .cta{
-    background:var(--accent); color:#0A0F1C; text-decoration:none;
-    padding:10px 18px; border-radius:8px; font-weight:600; font-size:15px;
-    box-shadow:0 2px 8px rgba(0,225,129,.3);
-    transition: all .3s ease;
-    white-space: nowrap;
-  }
-  .cta:hover{ background:#00ff94; transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,225,129,.5); }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
 
-  /* ---- Hero Section ---- */
-  .hero-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: calc(var(--header-h) + 8px) 40px 120px;
-    position: relative;
-    min-height: 100vh;
-  }
+        .nav-links a {
+            text-decoration: none;
+            /* color: var(--foreground); */
+            font-weight: 500;
+            transition: color 0.3s;
+        }
 
-  .container{
-    max-width:var(--container-w);
-    margin:0 auto;
-    text-align:center;
-    width: 100%;
-  }
-  .avatar{
-    width: clamp(120px, 25vw, 192px);
-    height: clamp(120px, 25vw, 192px);
-    border-radius:50%;
-    object-fit:cover; object-position:top;
-    margin:0 auto clamp(16px, 3vh, 24px);
-    background:transparent;
-    flex-shrink: 0;
-  }
-  h1{ color:var(--accent); font-size: clamp(1.75rem, 5vw, 2.5rem); margin:0 0 clamp(12px, 2vh, 16px); font-weight:700; }
-  .bio{ font-size: clamp(0.95rem, 2.5vw, 1.125rem); line-height:1.6; margin:0 0 clamp(20px, 4vh, 32px); opacity:.9; }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
 
-  /* Logo section header */
-  .logo-section-header {
-    text-align: center;
-    margin: 48px 0 24px;
-  }
-   .logo-section-header {
-    color: var(--fg);
-    font-size: clamp(0.95rem, 3.5vw, 1.75rem);
-    font-weight: 700;
-    margin: 0 0 20px 0;
-    opacity: 0.9;
-    line-height: 1.2;
-  } }
-  
-  @media (max-width: 768px) {
-    .logo-section-header {
-      margin: 32px 0 20px;
-    }
-  }
-  /* ---- Logo marquee ---- */
-  .logo-strip{
-    --strip-h: clamp(48px, 6vw, 70px);
-    --logo-h: calc(var(--strip-h) * 0.75);
-    --gap: clamp(32px, 4vw, 48px);
-    --speed: 35s;
-    background: var(--logo-strip-bg);
-    padding: 16px 0;
-    overflow: hidden;
-    width: 100%;
-    position: relative;
-  }%);
-    border-top:1px solid #e9e9e9; border-bottom:1px solid #e9e9e9;
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--foreground);
+        }
 
-    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-  }
-  .marquee{ overflow:hidden; }
-  .marquee-inner{
-    display:inline-flex; align-items:center; gap:var(--gap);
-    height:var(--strip-h);
-    will-change: transform;
-    animation: marquee var(--speed) linear infinite;
-  }
-  @keyframes marquee { from{ transform: translateX(0) } to{ transform: translateX(-50%) } }
-  .marquee:hover .marquee-inner{ animation-play-state: paused; }
-  .logo-mono{ filter: brightness(0) saturate(100%) invert(3%) sepia(13%) saturate(4851%) hue-rotate(189deg) brightness(97%) contrast(96%); }
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--background) 0%, var(--background) 50%, var(--primary-light) 100%);
+            padding: 5rem 0;
+        }
 
-  /* ---- Scroll Indicator Container ---- */
-  .scroll-indicator-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 20px 0;
-    z-index: 100;
-    pointer-events: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.3s ease;
-  }
-  
-  .scroll-indicator {
-    cursor: pointer;
-    pointer-events: all;
-  }
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
 
-  .chevron-circle {
-    width: 48px;
-    height: 48px;
-    background: var(--accent);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 8px rgba(0, 225, 129, 0.3);
-    transition: all 0.3s ease;
-    animation: bounce-chevron 2s ease-in-out infinite;
-  }
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--foreground);
+        }
 
-  .scroll-indicator:hover .chevron-circle {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(0, 225, 129, 0.5);
-  }
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--muted-foreground);
+            margin-bottom: 2rem;
+        }
 
-  .chevron {
-    width: 24px;
-    height: 24px;
-    stroke: #0A0F1C;
-    fill: none;
-    stroke-width: 2.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
+        /* Main Content */
+        main {
+            flex: 1;
+        }
 
-  @keyframes bounce-chevron {
-    0%, 20%, 50%, 80%, 100% {
-      transform: translateY(0);
-    }
-    40% {
-      transform: translateY(-8px);
-    }
-    60% {
-      transform: translateY(-4px);
-    }
-  }
+        section {
+            padding: 4rem 0;
+        }
 
-  /* ---- Timeline section ---- */
-  .timeline-section{
-    position:relative;
-    background:var(--bg);
-    padding: 0 0 0;
-  }
+        h2 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
 
-  /* Sticky Experience header */
-  .timeline-header{
-    position: sticky;
-    top: var(--header-h);
-    z-index: 20;
-    background: var(--bg);
-    border-bottom:1px solid rgba(0,0,0,.06);
-  }
-  [data-theme="dark"] .timeline-header{ border-bottom:1px solid rgba(255,255,255,.12); }
+        /* Table Section */
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
 
-  .timeline-header .inner{
-    max-width: var(--container-w);
-    margin: 0 auto;
-    padding: 16px 40px 18px;
-  }
-  .timeline-header h2{ margin:0; font-size:2rem; color:var(--accent); }
-  .timeline-header p{ margin:6px 0 0; opacity:.85; font-size: 1.05rem; }
+        .schedule-table th, 
+        .schedule-table td {
+            border: 1px solid var(--border);
+            padding: 1rem;
+            text-align: left;
+        }
 
-  /* Timeline body */
-  .timeline{
-    max-width: var(--container-w);
-    margin: 0 auto;
-    padding: 120px 40px 60px 40px;
-    position: relative;
-    overflow: hidden;
-  }
+        .schedule-table th {
+            background-color: var(--primary-light);
+            font-weight: 700;
+            font-size: 1.125rem;
+        }
 
-  /* Vertical rail line */
-  .timeline::before{
-    content:'';
-    position:absolute;
-    left:calc(40px + 36px);
-    top:calc(120px + 34.56px);
-    bottom:60px;
-    width:2px;
-    background:linear-gradient(180deg, rgba(0,225,129,0.3), var(--accent));
-  }
+        .schedule-table tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
 
-  /* Node/pin - CSS positioned element */
-  .t-pin{
-    position:absolute;
-    left: 36px;
-    top: calc(0.9em + 18px);
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 0 3px rgba(0,225,129,.28);
-    transform: translate(-50%, -50%);
-  }
+        .frequency {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.125rem;
+        }
 
-  /* Items */
-  .t-item{
-    position: relative;
-    padding: 18px 0 32px 100px;
-    margin: 0;
-    min-height: 60px;
-  }
+        .task-list {
+            list-style: none;
+        }
 
-  .t-company{ margin:0; font-weight:800; font-size:1.15rem; line-height:1.3; }
-  .t-role{ margin:4px 0 0; color:var(--accent); font-weight:700; }
-  .t-dur{ margin:6px 0 12px; opacity:.75; font-size: 0.95rem; }
-  .t-item ul { margin: 0; padding-left: 20px; }
-  .t-item li { margin-bottom: 6px; line-height: 1.5; }
-  .t-item li:last-child { margin-bottom: 0; }
+        .task-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
 
-  /* Timeline ending indicator */
-  .timeline-end {
-    position: relative;
-    padding: 0 0 0 100px;
-    margin: 0;
-    opacity: 0.6;
-    font-style: italic;
-    font-size: 0.95rem;
-    min-height: 30px;
-  }
-  .timeline-end .t-pin{
-    width: 8px;
-    height: 8px;
-    opacity: 0.5;
-  }
+        .check-icon {
+            color: var(--primary);
+            margin-top: 0.125rem;
+            flex-shrink: 0;
+        }
 
-  /* ---- Footer ---- */
-  .footer {
-    background: var(--bg);
-    border-top: 1px solid rgba(128, 128, 128, 0.2);
-    padding: 20px 24px;
-    text-align: center;
-    font-size: 0.85rem;
-    opacity: 0.6;
-  }
+        /* Cards Section */
+        .card-container {
+            display: none;
+            gap: 1.5rem;
+            flex-direction: column;
+        }
 
-  .footer p {
-    margin: 0;
-  }
+        .card {
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            background-color: var(--card);
+            transition: box-shadow 0.3s;
+        }
 
-  /* ---- Responsive ---- */
-  @media (max-width:768px){
-    .hero-section { padding: calc(var(--header-h) + 36px) 24px 60px; }
-    .timeline-header .inner{ padding: 14px 24px 16px; }
-    .timeline{ padding: 120px 24px 60px 24px; }
-    .timeline::before{ left:calc(24px + 36px); top:calc(120px + 34.56px); }
-    .t-item{ padding: 18px 0 32px 84px; }
-    .timeline-end { padding-left: 84px; }
-    h1 { font-size: 2rem; }
-    .bio { font-size: 1rem; }
-  }
-  @media (max-width:480px){
+        .card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
 
-    .t-item{ padding: 18px 0 32px 76px; }
-    .timeline-end { padding-left: 76px; }
-    .logo-strip{ --gap:clamp(36px, 9vw, 48px); --speed:45s; }
-    h1 { font-size: 1.75rem; }
-    .logo-section-header h2 { font-size: 1.4rem; }
-  }
-</style>
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .card-section {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .card-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--muted-foreground);
+            margin-bottom: 0.25rem;
+        }
+
+        /* Eco-Friendly Section */
+        .eco-section {
+            background-color: var(--primary-light);
+            text-align: center;
+        }
+
+        .eco-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            background-color: rgba(59, 130, 246, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .leaf-icon {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .eco-section p {
+            font-size: 1.125rem;
+            color: var(--muted-foreground);
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .eco-section p:last-of-type {
+            font-weight: 500;
+            color: var(--foreground);
+        }
+
+        /* Button */
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: rgba(59, 130, 246, 0.9);
+        }
+
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #1f2937;
+            color: white;
+            padding: 3rem 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .schedule-table {
+                display: none;
+            }
+            
+            .card-container {
+                display: flex;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--background);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                padding: 1rem;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.125rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero {
+                padding: 3rem 0;
+            }
+            
+            section {
+                padding: 2.5rem 0;
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <!-- Fixed Header -->
-  <header class="header" id="header">
-    <button class="theme-btn" id="theme-toggle" title="Toggle theme">
-      <svg class="theme-icon" id="theme-icon" viewBox="0 0 24 24"></svg>
-    </button>
+    <div class="min-h-screen">
+        <!-- Navigation -->
+    
+        
+        <main>
+            <!-- Hero Section -->
+          
 
-    <a href="https://www.linkedin.com/in/brendansheppard" target="_blank" rel="noopener noreferrer" class="linkedin-icon" aria-label="LinkedIn Profile"></a>
+            <!-- Cleaning Frequency Options -->
+            <section>
+                <div class="container">
+                 
+                    
+                    <!-- Desktop View - Table -->
+                    <table class="schedule-table">
+                        <thead>
+                            <tr>
+                                <th style="color: white;">Frequency</th>
+                                <th style="color: white;" >Ideal For</th>
+                                <th style="color: white;">Includes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="frequency">Daily Cleaning</td>
+                                <td>Busy offices, medical practices, and high-traffic workplaces</td>
+                                <td>
+                                    <ul class="task-list">
+                                        <li><i class="fas fa-check check-icon"></i> Trash emptied & liners replaced</li>
+                                        <li><i class="fas fa-check check-icon"></i> Desks, counters & high-touch surfaces sanitized</li>
+                                        <li><i class="fas fa-check check-icon"></i> Restrooms cleaned & disinfected</li>
+                                        <li><i class="fas fa-check check-icon"></i> Floors swept, vacuumed & spot-mopped</li>
+                                        <li><i class="fas fa-check check-icon"></i> Kitchen counters, tables & appliance exteriors wiped</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="frequency">Weekly Cleaning</td>
+                                <td>Small to mid-sized offices with moderate traffic</td>
+                                <td>
+                                    <ul class="task-list">
+                                        <li><i class="fas fa-check check-icon"></i> All daily cleaning tasks</li>
+                                        <li><i class="fas fa-check check-icon"></i> Full mopping of hard floors</li>
+                                        <li><i class="fas fa-check check-icon"></i> Detailed dusting of surfaces & décor</li>
+                                        <li><i class="fas fa-check check-icon"></i> Interior glass spot cleaning</li>
+                                        <li><i class="fas fa-check check-icon"></i> Breakroom sinks & tables sanitized</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="frequency">Monthly Cleaning</td>
+                                <td>Offices with low traffic or ongoing maintenance plans</td>
+                                <td>
+                                    <ul class="task-list">
+                                        <li><i class="fas fa-check check-icon"></i> All weekly cleaning tasks</li>
+                                        <li><i class="fas fa-check check-icon"></i> Dusting vents, baseboards & ceiling fans</li>
+                                        <li><i class="fas fa-check check-icon"></i> Deep cleaning of restrooms & breakrooms</li>
+                                        <li><i class="fas fa-check check-icon"></i> Polishing furniture surfaces</li>
+                                        <li><i class="fas fa-check check-icon"></i> High & low dusting for shelves and ledges</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="frequency">One-Time / Special Cleaning</td>
+                                <td>Pre-meeting prep, post-event cleanup, or seasonal refresh</td>
+                                <td>
+                                    <ul class="task-list">
+                                        <li><i class="fas fa-check check-icon"></i> Full top-to-bottom office cleaning</li>
+                                        <li><i class="fas fa-check check-icon"></i> Complete floor care (vacuum, mop, spot treat)</li>
+                                        <li><i class="fas fa-check check-icon"></i> Detailed restroom & kitchen sanitization</li>
+                                        <li><i class="fas fa-check check-icon"></i> Wiping doors, walls & light switches as needed</li>
+                                        <li><i class="fas fa-check check-icon"></i> Optional carpet cleaning & window washing</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-    <a href="https://www.textac.co" target="_blank" rel="noopener noreferrer" class="cta">Consulting Services</a>
-  </header>
+                    <!-- Mobile/Tablet View - Cards -->
+                    <div class="card-container">
+                        <div class="card">
+                            <h3>Daily Cleaning</h3>
+                            <div class="card-section">
+                                <p class="card-label">Ideal For:</p>
+                                <p>Busy offices, medical practices, and high-traffic workplaces</p>
+                            </div>
+                            <div class="card-section">
+                                <p class="card-label">Includes:</p>
+                                <ul class="task-list">
+                                    <li><i class="fas fa-check check-icon"></i> Trash emptied & liners replaced</li>
+                                    <li><i class="fas fa-check check-icon"></i> Desks, counters & high-touch surfaces sanitized</li>
+                                    <li><i class="fas fa-check check-icon"></i> Restrooms cleaned & disinfected</li>
+                                    <li><i class="fas fa-check check-icon"></i> Floors swept, vacuumed & spot-mopped</li>
+                                    <li><i class="fas fa-check check-icon"></i> Kitchen counters, tables & appliance exteriors wiped</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <h3>Weekly Cleaning</h3>
+                            <div class="card-section">
+                                <p class="card-label">Ideal For:</p>
+                                <p>Small to mid-sized offices with moderate traffic</p>
+                            </div>
+                            <div class="card-section">
+                                <p class="card-label">Includes:</p>
+                                <ul class="task-list">
+                                    <li><i class="fas fa-check check-icon"></i> All daily cleaning tasks</li>
+                                    <li><i class="fas fa-check check-icon"></i> Full mopping of hard floors</li>
+                                    <li><i class="fas fa-check check-icon"></i> Detailed dusting of surfaces & décor</li>
+                                    <li><i class="fas fa-check check-icon"></i> Interior glass spot cleaning</li>
+                                    <li><i class="fas fa-check check-icon"></i> Breakroom sinks & tables sanitized</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <h3>Monthly Cleaning</h3>
+                            <div class="card-section">
+                                <p class="card-label">Ideal For:</p>
+                                <p>Offices with low traffic or ongoing maintenance plans</p>
+                            </div>
+                            <div class="card-section">
+                                <p class="card-label">Includes:</p>
+                                <ul class="task-list">
+                                    <li><i class="fas fa-check check-icon"></i> All weekly cleaning tasks</li>
+                                    <li><i class="fas fa-check check-icon"></i> Dusting vents, baseboards & ceiling fans</li>
+                                    <li><i class="fas fa-check check-icon"></i> Deep cleaning of restrooms & breakrooms</li>
+                                    <li><i class="fas fa-check check-icon"></i> Polishing furniture surfaces</li>
+                                    <li><i class="fas fa-check check-icon"></i> High & low dusting for shelves and ledges</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <h3>One-Time / Special Cleaning</h3>
+                            <div class="card-section">
+                                <p class="card-label">Ideal For:</p>
+                                <p>Pre-meeting prep, post-event cleanup, or seasonal refresh</p>
+                            </div>
+                            <div class="card-section">
+                                <p class="card-label">Includes:</p>
+                                <ul class="task-list">
+                                    <li><i class="fas fa-check check-icon"></i> Full top-to-bottom office cleaning</li>
+                                    <li><i class="fas fa-check check-icon"></i> Complete floor care (vacuum, mop, spot treat)</li>
+                                    <li><i class="fas fa-check check-icon"></i> Detailed restroom & kitchen sanitization</li>
+                                    <li><i class="fas fa-check check-icon"></i> Wiping doors, walls & light switches as needed</li>
+                                    <li><i class="fas fa-check check-icon"></i> Optional carpet cleaning & window washing</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                  
+                </div>
+            </section>
 
-  <!-- Main content -->
-  <main>
-    <!-- Hero Section (Snap Section 1) -->
-    <section class="snap-section hero-section">
-      <div class="container">
-        <img
-          src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761572854/Headshot_white_tn3o7u.png"
-          alt="Brendan Sheppard"
-          class="avatar"
-          id="avatar-img"
-        />
-        <h1>Brendan Sheppard</h1>
-        <p class="bio">
-          Business Analyst professional with a strong record of business analysis,
-          user experience design, and business improvement activities in a range of
-          leading organisations in the private and government sectors.
-        </p>
+            <!-- Eco-Friendly Section -->
+           
+        </main>
 
-        <!-- Logo section header -->
-        <div class="logo-section-header">
-          <h2>Trusted Experience From Leading Companies</h2>
-        </div>
-
-        <!-- Logo scroll -->
-        <div aria-label="Companies I've worked with" class="logo-strip">
-          <div class="marquee">
-            <div class="marquee-inner">
-              <!-- Track 1 -->
-              <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761531976/allianz-black_fhzl8z.svg" alt="Allianz" class="logo-mono" style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
-              <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761532578/budget-direct-black_boldgt.svg" alt="Budget Direct" class="logo-mono" style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
-              <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761532579/fc-black_cxbh7a.svg" alt="Flight Centre" class="logo-mono" style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
-              <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761540650/fcm-black_yafwon.svg" alt="FCM" class="logo-mono" style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
-              <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761532580/liquid-black_l8fhgy.svg" alt="Liquid Interactive" class="logo-mono" style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
-              <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761532580/pfb-black_d1qsug.svg" alt="People First Bank" class="logo-mono" style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
-              <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761543598/qut-black-trimmed_tv8d7l.svg" alt="QUT" style="height:calc(var(--logo-h) * 1.4);width:auto;object-fit:contain" loading="lazy" />
-              <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761531951/qbcc-black_f9dvaw.svg" alt="QBCC" class="logo-mono" style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
-
-              <!-- Track 2 duplicate -->
-              <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761531976/allianz-black_fhzl8z.svg" alt="" aria-hidden="true" class="logo-mono" style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
-              <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761532578/budget-direct-black_boldgt.svg" alt="" aria-hidden="true" class="logo-mono" style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
-              <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761532579/fc-black_cxbh7a.svg" alt="" aria-hidden="true" class="logo-mono" style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
-              <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761540650/fcm-black_yafwon.svg" alt="" aria-hidden="true" class="logo-mono" style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
-              <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761532580/liquid-black_l8fhgy.svg" alt="" aria-hidden="true" class="logo-mono" style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
-              <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761532580/pfb-black_d1qsug.svg" alt="" aria-hidden="true" class="logo-mono" style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
-              <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761543598/qut-black-trimmed_tv8d7l.svg" alt="" aria-hidden="true" style="height:calc(var(--logo-h) * 1.4);width:auto;object-fit:contain" loading="lazy" />
-              <img src="https://res.cloudinary.com/ddo2giwfv/image/upload/v1761531951/qbcc-black_f9dvaw.svg" alt="" aria-hidden="true" class="logo-mono" style="height:var(--logo-h);width:auto;object-fit:contain" loading="lazy" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- Scroll Indicator (Fixed to bottom) -->
-    <div class="scroll-indicator-container">
-      <div class="scroll-indicator" onclick="document.getElementById('experience').scrollIntoView({behavior: 'smooth', block: 'start'})">
-        <div class="chevron-circle">
-          <svg class="chevron" viewBox="0 0 24 24">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </div>
-      </div>
+        <!-- Footer -->
+      
     </div>
 
-    <!-- Experience Section (Snap Section 2) -->
-    <section class="snap-section timeline-section" id="experience">
-      <div class="timeline-header">
-        <div class="inner">
-          <h2>Experience</h2>
-          <p>20+ years across financial services, travel, education, and government sectors</p>
-        </div>
-      </div>
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
 
-      <div class="timeline">
-        <article class="t-item">
-          <span class="t-pin" aria-hidden="true"></span>
-          <p class="t-company">Allianz Partners</p>
-          <p class="t-role">Business Analyst</p>
-          <p class="t-dur">Jul 2022 – Present · 2+ years</p>
-          <ul>
-            <li>Focusing on user journey optimisation and experience design in the insurance sector</li>
-          </ul>
-        </article>
-
-        <article class="t-item">
-          <span class="t-pin" aria-hidden="true"></span>
-          <p class="t-company">Liquid Interactive</p>
-          <p class="t-role">Senior Business Analyst</p>
-          <p class="t-dur">May 2021 – Jun 2022 · 1 yr 2 mos</p>
-          <ul>
-            <li>Led agile delivery projects with emphasis on customer experience and process improvement</li>
-          </ul>
-        </article>
-
-        <article class="t-item">
-          <span class="t-pin" aria-hidden="true"></span>
-          <p class="t-company">People First Bank</p>
-          <p class="t-role">Senior Business Analyst</p>
-          <p class="t-dur">Mar 2022 – Jun 2022 · 4 mos</p>
-          <ul>
-            <li>Supported merger program unifying members and systems across the new organisation</li>
-          </ul>
-        </article>
-
-        <article class="t-item">
-          <span class="t-pin" aria-hidden="true"></span>
-          <p class="t-company">QBCC</p>
-          <p class="t-role">Senior Business Analyst</p>
-          <p class="t-dur">Aug 2019 – Feb 2020 · 7 mos</p>
-          <ul>
-            <li>Business process modelling and regulatory systems analysis</li>
-          </ul>
-        </article>
-
-        <article class="t-item">
-          <span class="t-pin" aria-hidden="true"></span>
-          <p class="t-company">QUT</p>
-          <p class="t-role">Senior Business Analyst</p>
-          <p class="t-dur">Mar 2018 – Nov 2018 · 9 mos</p>
-          <ul>
-            <li>Improved learner and partner engagement systems</li>
-          </ul>
-        </article>
-
-        <article class="t-item">
-          <span class="t-pin" aria-hidden="true"></span>
-          <p class="t-company">Budget Direct</p>
-          <p class="t-role">Senior Business Analyst</p>
-          <p class="t-dur">Nov 2017 – Feb 2018 · 4 mos</p>
-          <ul>
-            <li>Optimised BAU sales & service processes for insurance operations</li>
-          </ul>
-        </article>
-
-        <article class="t-item">
-          <span class="t-pin" aria-hidden="true"></span>
-          <p class="t-company">Flight Centre Travel Group</p>
-          <p class="t-role">Business Analyst</p>
-          <p class="t-dur">2013 – 2017 · 4 years</p>
-          <ul>
-            <li>Led financial system migrations and infrastructure projects globally</li>
-          </ul>
-        </article>
-
-        <article class="t-item">
-          <span class="t-pin" aria-hidden="true"></span>
-          <p class="t-company">FCM Travel Solutions</p>
-          <p class="t-role">Business Analyst / Team Leader</p>
-          <p class="t-dur">2009 – 2012 · 3 years</p>
-          <ul>
-            <li>Managed BA team and drove continuous improvement for corporate travel solutions</li>
-          </ul>
-        </article>
-
-        <!-- Timeline ending -->
-        <div class="timeline-end">
-          <span class="t-pin" aria-hidden="true"></span>
-          <p>Earlier career experience available upon request</p>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <footer class="footer">
-        <p>&copy; 2025 Brendan Sheppard. All rights reserved.</p>
-      </footer>
-    </section>
-  </main>
-
-  <script>
-    const icons={
-      sun:'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>',
-      moon:'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
-      monitor:'<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>'
-    };
-    const html=document.documentElement;
-    const header=document.getElementById('header');
-    const themeToggle=document.getElementById('theme-toggle');
-    const themeIcon=document.getElementById('theme-icon');
-
-    function sys(){ return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
-    function setIcon(mode){
-      themeIcon.innerHTML = mode==='system' ? icons.monitor : mode==='light' ? icons.sun : icons.moon;
-      themeToggle.title = 'Current: ' + (mode==='system' ? 'System' : mode[0].toUpperCase()+mode.slice(1)) + ' mode';
-    }
-    function applyTheme(mode){
-      let actual = (mode==='system') ? sys() : mode;
-      if(actual==='dark'){ html.setAttribute('data-theme','dark'); } else { html.removeAttribute('data-theme'); }
-      setIcon(mode);
-    }
-    function cycle(){
-      const cur = localStorage.getItem('theme') || 'system';
-      const next = cur==='system' ? 'light' : cur==='light' ? 'dark' : 'system';
-      localStorage.setItem('theme', next);
-      applyTheme(next);
-    }
-    themeToggle.addEventListener('click', cycle);
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ()=>{
-      if((localStorage.getItem('theme')||'system')==='system') applyTheme('system');
-    });
-    applyTheme(localStorage.getItem('theme')||'system');
-
-    // Header blur toggle and chevron visibility
-    const chevronContainer = document.querySelector('.scroll-indicator-container');
-    window.addEventListener('scroll', ()=>{
-      const y = window.pageYOffset || document.documentElement.scrollTop;
-      if(y > 50) header.classList.add('scrolled'); else header.classList.remove('scrolled');
-      
-      // Hide chevron when scrolled past first section
-      const heroSection = document.querySelector('.hero-section');
-      if (heroSection && chevronContainer) {
-        const heroBottom = heroSection.offsetHeight;
-        if (y > heroBottom - 200) {
-          chevronContainer.style.opacity = '0';
-          chevronContainer.style.pointerEvents = 'none';
-        } else {
-          chevronContainer.style.opacity = '1';
-          chevronContainer.style.pointerEvents = 'none';
-        }
-      }
-    });
-
-    // Build SVG timeline dynamically
-    function buildTimeline() {
-      const items = document.querySelectorAll('[data-timeline-node]');
-      const endMarker = document.querySelector('[data-timeline-end]');
-      const svg = document.getElementById('timeline-svg');
-      const path = document.getElementById('timeline-path');
-      
-      if (!items.length || !svg || !path) return;
-
-      const positions = [];
-      const timeline = document.querySelector('.timeline');
-      if (!timeline) return;
-
-      // Calculate node positions relative to timeline container
-      // Align with middle of first line of company name text
-      items.forEach(item => {
-        const companyName = item.querySelector('.t-company');
-        if (companyName) {
-          const itemTop = item.offsetTop;
-          const companyTop = companyName.offsetTop;
-          const fontSize = parseFloat(window.getComputedStyle(companyName).fontSize);
-          // Position at middle of first line: item + company offset + half of font size
-          const offset = companyTop + (fontSize * 0.5);
-          positions.push(itemTop + offset);
-        }
-      });
-
-      // Add end marker position
-      if (endMarker) {
-        const endTop = endMarker.offsetTop;
-        const endText = endMarker.querySelector('p');
-        if (endText) {
-          const fontSize = parseFloat(window.getComputedStyle(endText).fontSize);
-          const offset = fontSize * 0.9;
-          positions.push(endTop + offset);
-        } else {
-          positions.push(endTop);
-        }
-      }
-
-      // Calculate SVG height
-      const maxY = Math.max(...positions);
-      const svgHeight = maxY + 40;
-      svg.setAttribute('viewBox', `0 0 72 ${svgHeight}`);
-      svg.style.height = svgHeight + 'px';
-
-      // Draw line
-      const lineX = 36; // Center of SVG
-      const pathData = `M ${lineX} ${positions[0]} L ${lineX} ${maxY}`;
-      path.setAttribute('d', pathData);
-
-      // Clear existing nodes
-      const existingCircles = svg.querySelectorAll('circle');
-      existingCircles.forEach(c => c.remove());
-
-      // Add nodes
-      const svgNS = "http://www.w3.org/2000/svg";
-      positions.forEach((y, index) => {
-        const isEnd = index === positions.length - 1 && endMarker;
-        const circle = document.createElementNS(svgNS, 'circle');
-        circle.setAttribute('cx', lineX);
-        circle.setAttribute('cy', y);
-        circle.setAttribute('r', isEnd ? 4 : 6);
-        circle.setAttribute('class', isEnd ? 'timeline-end-node' : 'timeline-node');
-        svg.appendChild(circle);
-      });
-    }
-
-    // Build timeline after DOM is fully loaded
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(buildTimeline, 100);
-      });
-    } else {
-      setTimeout(buildTimeline, 100);
-    }
-
-    // Rebuild on resize
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(buildTimeline, 100);
-    });
-  </script>
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.querySelector('.navigation');
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (!nav.contains(event.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>
