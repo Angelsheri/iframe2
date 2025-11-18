@@ -1,5 +1,5 @@
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
     <style>
         :root {
             --primary: #1f3b4dff ;
@@ -10,11 +10,83 @@
             --border: #e5e7eb;
             --foreground: #1f3b4dff;
         }
+/* ============================
+   TYPOGRAPHY VARIABLES
+   ============================ */
+   /* ============================
+   FONT IMPORTS USING YOUR URLs
+   ============================ */
 
+/* Bold 700 */
+@font-face {
+  font-family: "CustomSans-Bold";
+  src: url("https://storage.googleapis.com/msgsndr/Y7RJlLpf1yyQGF9BCYSR/media/68e2d40d47e70a5d5cf89707.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Regular 400 */
+@font-face {
+  font-family: "CustomSans-Regular";
+  src: url("https://storage.googleapis.com/msgsndr/Y7RJlLpf1yyQGF9BCYSR/media/68e2f854ee1a89a440f455a1.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+:root {
+  /* Font Families */
+  --font-bold: "customhl-68e2d40ebe7b9bd9479c0e2c-SansSerif Bold";
+  --font-regular: "customhl-68e2f85476899bbd00e6e84b-SansSerif";
+
+  /* Font Weights */
+  --fw-bold: 700;
+  --fw-regular: 500;
+
+  /* Default Color */
+  --text-color: rgb(31, 59, 77);
+
+  /* Sizes + Line Heights */
+  --headline-size: 30px;
+  --headline-line: 39px;
+
+  --paragraph-size: 18px;
+  --paragraph-line: 25px;
+}
+
+/* ============================
+   GLOBAL TEXT STYLES
+   ============================ */
+body, p, span, a, li, small, label ,td, th {
+  font-family: var(--font-regular);
+  font-weight: var(--fw-regular);
+  color: var(--text-color);
+  font-size: var(--paragraph-size);
+  line-height: var(--paragraph-line);
+}
+
+/* ============================
+   HEADLINES (Bold)
+   ============================ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-bold);
+  font-weight: var(--fw-bold);
+  color: var(--text-color);
+  line-height: var(--headline-line);
+  margin: 0 0 10px;
+}
+
+h1 { font-size: var(--headline-size); }
+h2 { font-size: 26px; }
+h3 { font-size: 22px; }
+td, th {   
+    font-size: 20px;
+ }
    
         body {
             background-color: var(--background);
             /* color: var(--foreground); */
+             font-family: var(--font-regular);
+  font-weight: var(--fw-regular);
             line-height: 1.6;
         }
 
@@ -409,14 +481,14 @@
                     <table class="schedule-table">
                         <thead>
                             <tr>
-                                <th style="color: white;">Frequency</th>
-                                <th style="color: white;" >Ideal For</th>
-                                <th style="color: white;">Includes</th>
+                                <th style="color: white; font-size: 20px;">Frequency</th>
+                                <th style="color: white; font-size: 20px;" >Ideal For</th>
+                                <th style="color: white;font-size: 20px;">Includes</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="frequency">Daily Cleaning</td>
+                                <td class="frequency"style="font-size: 20px;">Daily Cleaning</td>
                                 <td>Busy offices, medical practices, and high-traffic workplaces</td>
                                 <td>
                                     <ul class="task-list">
@@ -429,7 +501,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="frequency">Weekly Cleaning</td>
+                                <td class="frequency" style="font-size: 20px;">Weekly Cleaning</td>
                                 <td>Small to mid-sized offices with moderate traffic</td>
                                 <td>
                                     <ul class="task-list">
@@ -442,7 +514,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="frequency">Monthly Cleaning</td>
+                                <td class="frequency"style="font-size: 20px;">Monthly Cleaning</td>
                                 <td>Offices with low traffic or ongoing maintenance plans</td>
                                 <td>
                                     <ul class="task-list">
@@ -455,7 +527,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="frequency">One-Time / Special Cleaning</td>
+                                <td class="frequency"style="font-size: 20px;">One-Time / Special Cleaning</td>
                                 <td>Pre-meeting prep, post-event cleanup, or seasonal refresh</td>
                                 <td>
                                     <ul class="task-list">
