@@ -1,54 +1,42 @@
-<html>
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
-    <style>
-        :root {
-            --primary: #1f3b4dff ;
-            --primary-light: #57b3ca;
-            --background: #ffffff;
-            --card: #f8fafc;
-            --muted-foreground: #6b7280;
-            --border: #e5e7eb;
-            --foreground: #1f3b4dff;
-        }
+<style>
+/* Root Colors */
+:root {
+    --primary: #1f3b4dff ;
+    --primary-light: #57b3ca;
+    --background: #ffffff;
+    --card: #f8fafc;
+    --muted-foreground: #6b7280;
+    --border: #e5e7eb;
+    --foreground: #1f3b4dff;
+}
 
+/* Custom Fonts */
 @font-face {
   font-family: "CustomSans-Bold";
   src: url("https://storage.googleapis.com/msgsndr/Y7RJlLpf1yyQGF9BCYSR/media/68e2d40d47e70a5d5cf89707.ttf") format("truetype");
   font-weight: 700;
-  font-style: normal;
 }
 
-/* Regular 400 */
 @font-face {
   font-family: "CustomSans-Regular";
   src: url("https://storage.googleapis.com/msgsndr/Y7RJlLpf1yyQGF9BCYSR/media/68e2f854ee1a89a440f455a1.ttf") format("truetype");
   font-weight: 400;
-  font-style: normal;
 }
 
+/* Text Settings */
 :root {
-  /* Font Families */
-  --font-bold: "customhl-68e2d40ebe7b9bd9479c0e2c-SansSerif Bold";
-  --font-regular: "customhl-68e2f85476899bbd00e6e84b-SansSerif";
-
-  /* Font Weights */
+  --font-bold: "CustomSans-Bold";
+  --font-regular: "CustomSans-Regular";
   --fw-bold: 700;
-  --fw-regular: 500;
-
-  /* Default Color */
+  --fw-regular: 400;
   --text-color: rgb(31, 59, 77);
-
-  /* Sizes + Line Heights */
   --headline-size: 30px;
   --headline-line: 39px;
-
   --paragraph-size: 18px;
   --paragraph-line: 25px;
 }
 
-/* ============================
-   GLOBAL TEXT STYLES
-   ============================ */
+/* Global Text */
 body, p, span, a, li, small, label ,td, th {
   font-family: var(--font-regular);
   font-weight: var(--fw-regular);
@@ -57,405 +45,125 @@ body, p, span, a, li, small, label ,td, th {
   line-height: var(--paragraph-line);
 }
 
-/* ============================
-   HEADLINES (Bold)
-   ============================ */
-h1, h2, h3, h4, h5, h6 {
+/* Headings */
+h1, h2, h3 {
   font-family: var(--font-bold);
   font-weight: var(--fw-bold);
   color: var(--text-color);
   line-height: var(--headline-line);
-  margin: 0 0 10px;
+  margin-bottom: 10px;
 }
 
 h1 { font-size: var(--headline-size); }
 h2 { font-size: 26px; }
 h3 { font-size: 22px; }
-td, th {   
-    font-size: 20px;
- }
-   
-        body {
-            background-color: var(--background);
-            /* color: var(--foreground); */
-             font-family: var(--font-regular);
-  font-weight: var(--fw-regular);
-            line-height: 1.6;
-        }
 
-        .min-h-screen {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+/* Layout */
+body {
+  background-color: var(--background);
+  line-height: 1.6;
+}
 
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
+.min-h-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-        /* Navigation */
-        .navigation {
-            background-color: var(--background);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
 
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-        }
+/* Table */
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary);
-            text-decoration: none;
-        }
+.schedule-table th, 
+.schedule-table td {
+  border: 1px solid var(--border);
+  padding: 1rem;
+}
 
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
+.schedule-table th {
+  background-color: var(--primary-light);
+  font-weight: 700;
+  font-size: 20px;
+  color: white;
+}
 
-        .nav-links a {
-            text-decoration: none;
-            /* color: var(--foreground); */
-            font-weight: 500;
-            transition: color 0.3s;
-        }
+.schedule-table tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.03);
+}
 
-        .nav-links a:hover {
-            color: var(--primary);
-        }
+.frequency {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 20px;
+}
 
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--foreground);
-        }
+/* List */
+.task-list {
+  list-style: none;
+}
 
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--background) 0%, var(--background) 50%, var(--primary-light) 100%);
-            padding: 5rem 0;
-        }
+.task-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
 
-        .hero-content {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-        }
+/* Cards (Mobile View) */
+.card-container {
+  display: none;
+  gap: 1.5rem;
+  flex-direction: column;
+}
 
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: var(--foreground);
-        }
+.card {
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  background-color: var(--card);
+}
 
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--muted-foreground);
-            margin-bottom: 2rem;
-        }
+.card h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
 
-        /* Main Content */
-        main {
-            flex: 1;
-        }
+.card-section {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
 
-        section {
-            padding: 4rem 0;
-        }
+.card-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
 
-        h2 {
-            font-size: 2.25rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 3rem;
-        }
+.card-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+}
 
-        /* Table Section */
-        .schedule-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 2rem;
-        }
-
-        .schedule-table th, 
-        .schedule-table td {
-            border: 1px solid var(--border);
-            padding: 1rem;
-            text-align: left;
-        }
-
-        .schedule-table th {
-            background-color: var(--primary-light);
-            font-weight: 700;
-            font-size: 1.125rem;
-        }
-
-        .schedule-table tr:nth-child(even) {
-            background-color: rgba(0, 0, 0, 0.03);
-        }
-
-        .frequency {
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 1.125rem;
-        }
-
-        .task-list {
-            list-style: none;
-        }
-
-        .task-list li {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .check-icon {
-            color: var(--primary);
-            margin-top: 0.125rem;
-            flex-shrink: 0;
-        }
-
-        /* Cards Section */
-        .card-container {
-            display: none;
-            gap: 1.5rem;
-            flex-direction: column;
-        }
-
-        .card {
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            background-color: var(--card);
-            transition: box-shadow 0.3s;
-        }
-
-        .card:hover {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        .card h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 0.75rem;
-        }
-
-        .card-section {
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .card-section:last-of-type {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .card-label {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--muted-foreground);
-            margin-bottom: 0.25rem;
-        }
-
-        /* Eco-Friendly Section */
-        .eco-section {
-            background-color: var(--primary-light);
-            text-align: center;
-        }
-
-        .eco-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 4rem;
-            height: 4rem;
-            border-radius: 50%;
-            background-color: rgba(59, 130, 246, 0.1);
-            margin-bottom: 1.5rem;
-        }
-
-        .leaf-icon {
-            color: var(--primary);
-            font-size: 2rem;
-        }
-
-        .eco-section p {
-            font-size: 1.125rem;
-            color: var(--muted-foreground);
-            margin-bottom: 2rem;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .eco-section p:last-of-type {
-            font-weight: 500;
-            color: var(--foreground);
-        }
-
-        /* Button */
-        .btn {
-            display: inline-block;
-            background-color: var(--primary);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.375rem;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background-color 0.3s;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .btn:hover {
-            background-color: rgba(59, 130, 246, 0.9);
-        }
-
-        .btn-lg {
-            padding: 1rem 2rem;
-            font-size: 1.125rem;
-        }
-
-        /* Footer */
-        .footer {
-            background-color: #1f2937;
-            color: white;
-            padding: 3rem 0;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 2rem;
-        }
-
-        .footer-section {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .footer h3 {
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-links a {
-            color: #d1d5db;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: white;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid #374151;
-            color: #9ca3af;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .schedule-table {
-                display: none;
-            }
-            
-            .card-container {
-                display: flex;
-            }
-            
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            h2 {
-                font-size: 2rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background-color: var(--background);
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                padding: 1rem;
-            }
-            
-            .nav-links.active {
-                display: flex;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .hero p {
-                font-size: 1.125rem;
-            }
-            
-            h2 {
-                font-size: 1.75rem;
-            }
-            
-            .footer-content {
-                flex-direction: column;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .hero {
-                padding: 3rem 0;
-            }
-            
-            section {
-                padding: 2.5rem 0;
-            }
-        }
-    </style>
-</head>
+/* RESPONSIVE: Switch table → cards */
+@media (max-width: 1024px) {
+  .schedule-table { display: none; }
+  .card-container { display: flex; }
+}
+</style>
 <body>
     <div class="min-h-screen">
         <!-- Navigation -->
@@ -474,9 +182,9 @@ td, th {
                     <table class="schedule-table">
                         <thead>
                             <tr>
-                                <th style="color: white; font-size: 20px;">Frequency</th>
-                                <th style="color: white; font-size: 20px;" >Ideal For</th>
-                                <th style="color: white;font-size: 20px;">Includes</th>
+                                <th style="color: white; font-size: 20px; text-align: left;">Frequency</th>
+                                <th style="color: white; font-size: 20px; text-align: left;" >Ideal For</th>
+                                <th style="color: white;font-size: 20px; text-align: left;">Includes</th>
                             </tr>
                         </thead>
                         <tbody>
